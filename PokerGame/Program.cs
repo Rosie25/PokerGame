@@ -47,6 +47,13 @@ namespace PokerGame
         {
             handOne = new List<string>();
             handTwo = new List<string>();
+
+            int half = line.Length / 2;
+            string one = line.Substring(0, half);
+            string two = line.Substring(half + 1, half);
+
+            handOne = line.Substring(0, half).Split(' ').ToList();
+            handTwo = line.Substring(half + 1, half).Split(' ').ToList();
         }
 
         private static int GetHandScore(List<string> hand)
