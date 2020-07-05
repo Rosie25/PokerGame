@@ -28,28 +28,25 @@ namespace PokerGame
                 handTwoScore = GetHandScore(handTwo);
             }
 
+            // get hand one result
+            // get hand two result
+            // compare result
+            // if different, record result
+            // if the same, sort by tie breaker then record result
 
+            // output results
 
-
-
-
-
-        // get hand one result
-        // get hand two result
-        // compare result
-        // if different, record result
-        // if the same, sort by tie breaker then record result
-
-        // output results
-    }
+            Console.WriteLine("Poker Game Results:");
+            Console.WriteLine("------------------:");
+            Console.WriteLine("Player 1: " + playerOneWins.ToString() + " wins");
+            Console.WriteLine("Player 2: " + playerTwoWins.ToString() + " wins");
+        }
 
 
         private static void GetHands(string line, out List<string> handOne, out List<string> handTwo)
         {
             handOne = new List<string>();
             handTwo = new List<string>();
-
-
         }
 
         private static int GetHandScore(List<string> hand)
