@@ -12,12 +12,11 @@ namespace PokerGame
         {
             int playerOneWins = 0;
             int playerTwoWins = 0;
-
-            List<string> handOne;
-            List<string> handTwo;
-            int handOneScore;
-            int handTwoScore;
+            int ties = 0;
+            Hand handOne;
+            Hand handTwo;
             // get input stream 
+
             PokerHelper poker = new PokerHelper();
 
             // for each line (game) in stream
@@ -25,22 +24,45 @@ namespace PokerGame
             while (!string.IsNullOrEmpty(line = Console.ReadLine()))
             {
                 poker.GetHands(line, out handOne, out handTwo);
-                handOneScore = poker.GetHandScore(handOne);
-                handTwoScore = poker.GetHandScore(handTwo);
-            }
 
-            // get hand one result
-            // get hand two result
-            // compare result
-            // if different, record result
-            // if the same, sort by tie breaker then record result
+                // get hand one result
+                handOne.SetHandValues();
+                // get hand two result
+                handTwo.SetHandValues();
+                // compare result
+
+                if (handOne.Score > handTwo.Score)
+                {
+                    playerOneWins++;
+                }
+                if (handOne.Score < handTwo.Score)
+                {
+                    playerTwoWins++;
+                }
+                if (handOne.Score == handTwo.Score)
+                {
+                    // if the same, sort by tie breaker then record result
+
+                    if (poker.IsTie(handOne, handTwo))
+                        ties++;
+                    else if (poker.HandOneWinsTieBreak(handOne, handTwo))
+                        playerOneWins++;
+                    else
+                        playerTwoWins++;
+
+                }
+
+            }
 
             // output results
 
             Console.WriteLine("Poker Game Results:");
             Console.WriteLine("------------------:");
-            Console.WriteLine("Player 1: " + playerOneWins.ToString() + " wins");
-            Console.WriteLine("Player 2: " + playerTwoWins.ToString() + " wins");
+            Console.WriteLine("Player 1: " + playerOneWins.ToString() + " win(s)");
+            Console.WriteLine("Player 2: " + playerTwoWins.ToString() + " win(s)");
+            Console.WriteLine("Ties: " + ties.ToString() + " win(s)");
+            Console.WriteLine("The End :)");
+
         }
 
 

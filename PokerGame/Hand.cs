@@ -24,8 +24,13 @@ namespace PokerGame
             cards = new List<Card>();
         }
 
+        /// <summary>
+        /// perform all the calculations for the current hand (must have 5 cards only)
+        /// </summary>
         public void SetHandValues()
         {
+            if (cards == null || cards.Count() != 5) return;
+
             SetHighCard();
             SetLowCard();
             CheckForDuplicates();
@@ -47,17 +52,18 @@ namespace PokerGame
         /// <returns></returns>
         public void CheckForFlush()
         {
+            IsFlush = false;
+
             if (cards == null || cards.Count() != 5) return;
 
             string suit = cards[0].Suit;
             if (cards.Where(flush => flush.Suit.Equals(suit)).Count() == 5)
                 IsFlush = true;
 
-            IsFlush = false;
         }
 
         /// <summary>
-        /// 
+        /// set the high card value in the hand
         /// </summary>
         public void SetHighCard()
         {
@@ -66,7 +72,7 @@ namespace PokerGame
         }
 
         /// <summary>
-        /// 
+        /// set the low card value for the hand
         /// </summary>
         public void SetLowCard()
         {
@@ -75,22 +81,27 @@ namespace PokerGame
         }
 
         /// <summary>
-        /// 
+        /// determines whether the hand is a straight and sets the IsStraight flag accordingly
+        /// a straight is 5 cards in a row, so hand cannot conatin duplicates and
+        /// the high card will be four larger than the low card
         /// </summary>
         /// <param name="hand"></param>
         /// <returns></returns>
         public void CheckForStraight()
         {
             IsStraight = false;
-
             if (cards == null || cards.Count() != 5) return;
-
             if (HasDuplicates) return;
 
-            if (HighCard - LowCard == 4) IsStraight = true;
-
+            if (HighCard - LowCard == 4)
+            {
+                IsStraight = true;
+            }
         }
 
+        /// <summary>
+        /// determines whether the hand has any duplicates and sets the HasDuplicates flag accordingly
+        /// </summary>
         public void CheckForDuplicates()
         {
             HasDuplicates = cards.GroupBy(card => card.Number).Where(group => group.Count() > 1).Select(duplicates => duplicates.Key).Any();
@@ -154,7 +165,11 @@ namespace PokerGame
 
             ScoreCardValue = HighCard;
 
-            if (IsStraight && IsFlush) Score = HighCard == 14 ? 10 : 9; // Royal flush or Stright flush
+            if (IsStraight && IsFlush)
+            {
+                Score = HighCard == 14 ? 10 : 9; // Royal flush or Stright flush
+                return;
+            }
             else if (IsFlush) Score = 6; // flush
             else if (IsStraight) Score = 5; // straight
             else Score = 1; // high card only
