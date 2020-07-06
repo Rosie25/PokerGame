@@ -16,3 +16,8 @@ jobs:
       uses: warrenbuckley/Setup-MSBuild@v1
     - name: Build with MSBuild
       run: msbuild  PokerGame -p:Configuration=Release
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: PokerGame
+        path: PokerGame\bin\Debug\PokerGame.exe   
