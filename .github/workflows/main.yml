@@ -20,4 +20,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: PokerGame
-        path: PokerGame\bin\Debug\PokerGame.exe   
+        path: D:\a\PokerGame\PokerGame\PokerGame\bin\Release\PokerGame.exe   
