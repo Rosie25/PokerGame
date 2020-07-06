@@ -8,29 +8,25 @@ namespace PokerGame
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             int playerOneWins = 0;
             int playerTwoWins = 0;
             int ties = 0;
-            Hand handOne;
-            Hand handTwo;
-            // get input stream 
-
             PokerHelper poker = new PokerHelper();
 
+            // read file
+            System.IO.StreamReader file = new System.IO.StreamReader(@"c:\temp\poker-hands.txt");
             // for each line (game) in stream
             string line;
-            while (!string.IsNullOrEmpty(line = Console.ReadLine()))
+            while ((line = file.ReadLine()) != null)
             {
-                poker.GetHands(line, out handOne, out handTwo);
+                poker.GetHands(line, out Hand handOne, out Hand handTwo);
 
-                // get hand one result
+                // get hand results
                 handOne.SetHandValues();
-                // get hand two result
                 handTwo.SetHandValues();
                 // compare result
-
                 if (handOne.Score > handTwo.Score)
                 {
                     playerOneWins++;
@@ -42,20 +38,16 @@ namespace PokerGame
                 if (handOne.Score == handTwo.Score)
                 {
                     // if the same, sort by tie breaker then record result
-
                     if (poker.IsTie(handOne, handTwo))
                         ties++;
                     else if (poker.HandOneWinsTieBreak(handOne, handTwo))
                         playerOneWins++;
                     else
                         playerTwoWins++;
-
                 }
-
             }
 
             // output results
-
             Console.WriteLine("Poker Game Results:");
             Console.WriteLine("------------------:");
             Console.WriteLine("Player 1: " + playerOneWins.ToString() + " win(s)");
@@ -64,8 +56,6 @@ namespace PokerGame
             Console.WriteLine("The End :)");
 
         }
-
-
 
     }
 }

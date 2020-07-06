@@ -45,11 +45,9 @@ namespace PokerGame
         /// <returns></returns>
         public bool IsTie(Hand handOne, Hand handTwo)
         {
-            if (handOne.Score == 10) return true; // royal flush
-
-            if ((handOne.Score == 9 || handOne.Score == 5) && handOne.ScoreCardValue == handTwo.ScoreCardValue) return true; // straight and same high card
-
-            // var a = handOne.cards.All(handTwo.cards.Contains);
+            // TODO: This is out of scope for these requirements, assuming that every hand has a clear winner
+            //if (handOne.Score == 10) return true; // royal flush
+            //if ((handOne.Score == 9 || handOne.Score == 5) && handOne.ScoreCardValue == handTwo.ScoreCardValue) return true; // straight and same high card
 
             return false;
         }
@@ -70,21 +68,40 @@ namespace PokerGame
             switch (handOne.Score)
             {
                 case 1: // high card
-                    if (handOne.HighCard == handTwo.HighCard) { CheckAllCards(); }
-                    else return handOne.HighCard > handTwo.HighCard;
-                    break;
-                case 2: // pair
+                    return HighCardTieBreak_HandOneWins(handOne.cards, handTwo.cards);
+                case 2:
                     // check for highest pair
-                    if (handOne.ScoreCardValue > handTwo.ScoreCardValue) return true;
-                    if (handOne.ScoreCardValue < handTwo.ScoreCardValue) return false;
-                    // pairs are the same so need to check highest card
-                    break;
+                    List<int> h1Pair = GetDuplicates(handOne.cards);
+                    List<int> h2Pair = GetDuplicates(handTwo.cards);
+                    if (h1Pair.Max(m => m) == h2Pair.Max(m => m))
+                    {
+                        // same pairs so check remaining cards
+                        return HighCardTieBreak_HandOneWins(GetNonDuplicates(handOne.cards, h1Pair), GetNonDuplicates(handTwo.cards, h2Pair));
+                    }
+                    // return highest pair
+                    return h1Pair.Max(m => m) > h2Pair.Max(m => m);
                 case 3: // two pair
-                    // check for highest pair
-                    if (handOne.ScoreCardValue > handTwo.ScoreCardValue) return true;
-                    if (handOne.ScoreCardValue < handTwo.ScoreCardValue) return false;
-                    // if high pair are the same, need to check rest of hand
-                    break;
+                    // get pairs
+                    List<int> h1Pairs = GetDuplicates(handOne.cards);
+                    List<int> h2Pairs = GetDuplicates(handTwo.cards);
+                    // check high pair
+                    if (h1Pairs.Max(m => m) == h2Pairs.Max(m => m))
+                    {
+                        // high pairs equal, so check 2nd pair
+                        if (h1Pairs.Min(m => m) == h2Pairs.Min(m => m))
+                        {
+                            // 2nd pair equal, check last card
+                            return HighCardTieBreak_HandOneWins(GetNonDuplicates(handOne.cards, h1Pairs), GetNonDuplicates(handTwo.cards, h2Pairs));
+                        }
+                        else
+                        {
+                            return h1Pairs.Min(m => m) > h2Pairs.Min(m => m);
+                        }
+                    }
+                    else
+                    {
+                        return h1Pairs.Max(m => m) > h2Pairs.Max(m => m);
+                    }
                 case 4: // 3 of a kind
                     // can only have one three of a kind per value
                     return handOne.ScoreCardValue > handTwo.ScoreCardValue;
@@ -93,10 +110,7 @@ namespace PokerGame
                     return handOne.ScoreCardValue > handTwo.ScoreCardValue;
                 case 6: // flush
                     // check for highest card
-                    if (handOne.ScoreCardValue > handTwo.ScoreCardValue) return true;
-                    if (handOne.ScoreCardValue < handTwo.ScoreCardValue) return false;
-                    // need to check remaining cards if top card matches
-                    break;
+                    return HighCardTieBreak_HandOneWins(handOne.cards, handTwo.cards);
                 case 7: // full house
                     // can only have one three of a kind per value
                     return handOne.ScoreCardValue > handTwo.ScoreCardValue;
@@ -112,9 +126,43 @@ namespace PokerGame
 
         }
 
-        public void CheckAllCards()
+        public bool HighCardTieBreak_HandOneWins(List<Card> handOne, List<Card> handTwo)
         {
+            if (handOne.Count == 0) return false; // means all cards equal so shouldn;t get here 
 
+            int maxOne = handOne.Max(m => m.Number);
+            int maxTwo = handTwo.Max(m => m.Number);
+
+            if (maxOne == maxTwo)
+            {
+                // check the next card
+                List<Card> newHandOne = handOne.Where(card => card.Number != maxOne).ToList();
+                List<Card> newHandTwo = handTwo.Where(card => card.Number != maxTwo).ToList();
+                return HighCardTieBreak_HandOneWins(newHandOne, newHandTwo);
+            }
+            else return maxOne > maxTwo;
+        }
+
+        /// <summary>
+        /// returns a list of duplicate cards in a hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
+        public List<int> GetDuplicates(List<Card> cards)
+        {
+            return cards.GroupBy(card => card.Number).Where(group => group.Count() > 1).Select(duplicates => duplicates.Key).ToList();
+        }
+
+
+        /// <summary>
+        /// returns a list of non duplicate cards in a hand
+        /// </summary>
+        /// <param name="cards"></param>
+        /// <returns></returns>
+        public List<Card> GetNonDuplicates(List<Card> cards, List<int> duplicates)
+        {
+            return cards.Where(card => !duplicates.Any(dup => dup == card.Number)).ToList();
+            //return cards.GroupBy(card => card.Number).Where(group => !group.Skip(1).Any()).Select(nonDuplicates => nonDuplicates.Key).ToList();
         }
 
     }
