@@ -9,7 +9,7 @@ namespace PokerGame
 {
     public class Hand
     {
-        public List<Card> cards { get; set; }
+        public List<Card> Cards { get; set; }
         public int HighCard { get; set; }
         public int LowCard { get; set; }
         public int Score { get; set; }
@@ -21,7 +21,7 @@ namespace PokerGame
 
         public Hand()
         {
-            cards = new List<Card>();
+            Cards = new List<Card>();
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace PokerGame
         /// </summary>
         public void SetHandValues()
         {
-            if (cards == null || cards.Count() != 5) return;
+            if (Cards == null || Cards.Count() != 5) return;
 
             SetHighCard();
             SetLowCard();
@@ -54,10 +54,10 @@ namespace PokerGame
         {
             IsFlush = false;
 
-            if (cards == null || cards.Count() != 5) return;
+            if (Cards == null || Cards.Count != 5) return;
 
-            string suit = cards[0].Suit;
-            if (cards.Where(flush => flush.Suit.Equals(suit)).Count() == 5)
+            string suit = Cards[0].Suit;
+            if (Cards.Where(flush => flush.Suit.Equals(suit)).Count() == 5)
                 IsFlush = true;
 
         }
@@ -67,8 +67,8 @@ namespace PokerGame
         /// </summary>
         public void SetHighCard()
         {
-            if (cards == null || cards.Count() != 5) return;
-            HighCard = cards.Max(m => m.Number);
+            if (Cards == null || Cards.Count != 5) return;
+            HighCard = Cards.Max(m => m.Number);
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace PokerGame
         /// </summary>
         public void SetLowCard()
         {
-            if (cards == null || cards.Count() != 5) return;
-            LowCard = cards.Min(m => m.Number);
+            if (Cards == null || Cards.Count != 5) return;
+            LowCard = Cards.Min(m => m.Number);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace PokerGame
         public void CheckForStraight()
         {
             IsStraight = false;
-            if (cards == null || cards.Count() != 5) return;
+            if (Cards == null || Cards.Count != 5) return;
             if (HasDuplicates) return;
 
             if (HighCard - LowCard == 4)
@@ -104,7 +104,7 @@ namespace PokerGame
         /// </summary>
         public void CheckForDuplicates()
         {
-            HasDuplicates = cards.GroupBy(card => card.Number).Where(group => group.Count() > 1).Select(duplicates => duplicates.Key).Any();
+            HasDuplicates = Cards.GroupBy(card => card.Number).Where(group => group.Count() > 1).Select(duplicates => duplicates.Key).Any();
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace PokerGame
         /// </summary>
         public void CalculateDuplicateScore()
         {
-            List<(int Element, int Counter)> duplicateCards = cards.GroupBy(card => card.Number).Where(group => group.Count() > 1).Select(duplicates => (Element: duplicates.Key, Counter: duplicates.Count())).ToList();
+            List<(int Element, int Counter)> duplicateCards = Cards.GroupBy(card => card.Number).Where(group => group.Count() > 1).Select(duplicates => (Element: duplicates.Key, Counter: duplicates.Count())).ToList();
 
             if (duplicateCards.Count == 1)
             {

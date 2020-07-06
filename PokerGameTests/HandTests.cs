@@ -16,7 +16,7 @@ namespace PokerGame.Tests
         public void CheckForDuplicatesTest_True()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("AS"),
                 new Card("AC"),
@@ -34,7 +34,7 @@ namespace PokerGame.Tests
         public void CheckForDuplicatesTest_False()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("AS"),
                 new Card("KC"),
@@ -50,7 +50,7 @@ namespace PokerGame.Tests
         public void CalculateDuplicateScore_Pair_Test()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("AS"),
                 new Card("AC"),
@@ -69,7 +69,7 @@ namespace PokerGame.Tests
         public void CalculateDuplicateScore_TwoPair_Test()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("AS"),
                 new Card("AC"),
@@ -88,7 +88,7 @@ namespace PokerGame.Tests
         public void CalculateDuplicateScore_TOAK_Test()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("JS"),
                 new Card("JC"),
@@ -107,7 +107,7 @@ namespace PokerGame.Tests
         public void CalculateDuplicateScore_FOAK_Test()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("6S"),
                 new Card("6C"),
@@ -126,7 +126,7 @@ namespace PokerGame.Tests
         public void CalculateDuplicateScore_FullHouse_Test()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("KS"),
                 new Card("KC"),
@@ -145,7 +145,7 @@ namespace PokerGame.Tests
         public void CheckForFlushTest_True()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("KS"),
                 new Card("JS"),
@@ -165,7 +165,7 @@ namespace PokerGame.Tests
         public void CheckForFlushTest_False()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("KS"),
                 new Card("KC"),
@@ -183,7 +183,7 @@ namespace PokerGame.Tests
         public void CheckForStraightTest_Picture_True()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("AS"),
                 new Card("KC"),
@@ -204,7 +204,7 @@ namespace PokerGame.Tests
         public void CheckForStraightTest_Number_True()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("2S"),
                 new Card("5C"),
@@ -223,7 +223,7 @@ namespace PokerGame.Tests
         public void CheckForStraightTest_Mix_True()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("8S"),
                 new Card("9C"),
@@ -243,7 +243,7 @@ namespace PokerGame.Tests
         public void CheckForStraightTest_False()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("KS"),
                 new Card("KC"),
@@ -263,7 +263,7 @@ namespace PokerGame.Tests
         public void SetLowCardTest()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("9S"),
                 new Card("9C"),
@@ -280,7 +280,7 @@ namespace PokerGame.Tests
         public void SetHighCardTest()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("9S"),
                 new Card("9C"),
@@ -297,7 +297,7 @@ namespace PokerGame.Tests
         public void CalculateNonDuplicateScoreTest_Flush()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("9S"),
                 new Card("6S"),
@@ -318,7 +318,7 @@ namespace PokerGame.Tests
         public void CalculateNonDuplicateScoreTest_Straight()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("9C"),
                 new Card("8C"),
@@ -339,7 +339,7 @@ namespace PokerGame.Tests
         public void CalculateNonDuplicateScoreTest_StraightFlush()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("KS"),
                 new Card("QS"),
@@ -360,7 +360,7 @@ namespace PokerGame.Tests
         public void CalculateNonDuplicateScoreTest_RoyalFlush()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("AH"),
                 new Card("KH"),
@@ -381,7 +381,7 @@ namespace PokerGame.Tests
         public void CalculateNonDuplicateScoreTest_High()
         {
             Hand hand = new Hand();
-            hand.cards = new List<Card>
+            hand.Cards = new List<Card>
             {
                 new Card("KS"),
                 new Card("6H"),

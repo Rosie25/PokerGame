@@ -22,13 +22,13 @@ namespace PokerGame
             handOne = new Hand();
             foreach (string h in h1)
             {
-                handOne.cards.Add(new Card(h));
+                handOne.Cards.Add(new Card(h));
             }
             List<string> h2 = line.Substring(half + 1, half).Split(' ').ToList();
             handTwo = new Hand();
             foreach (string h in h2)
             {
-                handTwo.cards.Add(new Card(h));
+                handTwo.Cards.Add(new Card(h));
             }
         }
 
@@ -68,22 +68,22 @@ namespace PokerGame
             switch (handOne.Score)
             {
                 case 1: // high card
-                    return HighCardTieBreak_HandOneWins(handOne.cards, handTwo.cards);
+                    return HighCardTieBreak_HandOneWins(handOne.Cards, handTwo.Cards);
                 case 2:
                     // check for highest pair
-                    List<int> h1Pair = GetDuplicates(handOne.cards);
-                    List<int> h2Pair = GetDuplicates(handTwo.cards);
+                    List<int> h1Pair = GetDuplicates(handOne.Cards);
+                    List<int> h2Pair = GetDuplicates(handTwo.Cards);
                     if (h1Pair.Max(m => m) == h2Pair.Max(m => m))
                     {
                         // same pairs so check remaining cards
-                        return HighCardTieBreak_HandOneWins(GetNonDuplicates(handOne.cards, h1Pair), GetNonDuplicates(handTwo.cards, h2Pair));
+                        return HighCardTieBreak_HandOneWins(GetNonDuplicates(handOne.Cards, h1Pair), GetNonDuplicates(handTwo.Cards, h2Pair));
                     }
                     // return highest pair
                     return h1Pair.Max(m => m) > h2Pair.Max(m => m);
                 case 3: // two pair
                     // get pairs
-                    List<int> h1Pairs = GetDuplicates(handOne.cards);
-                    List<int> h2Pairs = GetDuplicates(handTwo.cards);
+                    List<int> h1Pairs = GetDuplicates(handOne.Cards);
+                    List<int> h2Pairs = GetDuplicates(handTwo.Cards);
                     // check high pair
                     if (h1Pairs.Max(m => m) == h2Pairs.Max(m => m))
                     {
@@ -91,7 +91,7 @@ namespace PokerGame
                         if (h1Pairs.Min(m => m) == h2Pairs.Min(m => m))
                         {
                             // 2nd pair equal, check last card
-                            return HighCardTieBreak_HandOneWins(GetNonDuplicates(handOne.cards, h1Pairs), GetNonDuplicates(handTwo.cards, h2Pairs));
+                            return HighCardTieBreak_HandOneWins(GetNonDuplicates(handOne.Cards, h1Pairs), GetNonDuplicates(handTwo.Cards, h2Pairs));
                         }
                         else
                         {
@@ -110,7 +110,7 @@ namespace PokerGame
                     return handOne.ScoreCardValue > handTwo.ScoreCardValue;
                 case 6: // flush
                     // check for highest card
-                    return HighCardTieBreak_HandOneWins(handOne.cards, handTwo.cards);
+                    return HighCardTieBreak_HandOneWins(handOne.Cards, handTwo.Cards);
                 case 7: // full house
                     // can only have one three of a kind per value
                     return handOne.ScoreCardValue > handTwo.ScoreCardValue;
