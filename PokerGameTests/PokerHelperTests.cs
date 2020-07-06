@@ -11,105 +11,80 @@ namespace PokerGame.Tests
     [TestClass()]
     public class PokerHelperTests
     {
-        //[TestMethod()]
-        //public void CheckForFlushTest_True()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = true;
-        //    string testData = "2C 3C 4C 5C 8C";
+        [TestMethod()]
+        public void GetDuplicatesTest()
+        {
+            PokerHelper poker = new PokerHelper();
+            List<Card> cards = new List<Card>
+            {
+                new Card("KS"),
+                new Card("KH"),
+                new Card("9S"),
+                new Card("9D"),
+                new Card("2S")
+            };
+            int expectedPairMax = 13;
+            int expectedPairMin = 9;
 
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForFlush(testHand);
+            List<int> duplicates = poker.GetDuplicates(cards);
 
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
-        //[TestMethod()]
-        //public void CheckForFlushTest_False()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = false;
-        //    string testData = "2C 9D 4C 5H 8C";
+            Assert.AreEqual(expectedPairMax, duplicates.Max());
+            Assert.AreEqual(expectedPairMin, duplicates.Min());
 
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForFlush(testHand);
+        }
 
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
+        [TestMethod()]
+        public void GetNonDuplicatesTest()
+        {
+            PokerHelper poker = new PokerHelper();
+            List<Card> cards = new List<Card>
+            {
+                new Card("KS"),
+                new Card("KH"),
+                new Card("9S"),
+                new Card("9D"),
+                new Card("2S")
+            };
+            List<int> duplicates = new List<int>
+            {
+                13,
+                9
+            };
+            string expectedCardValue = "2S";
+            int expectedCount = 1;
+            List<Card> nonDuplicates = poker.GetNonDuplicates(cards, duplicates);
 
-        //[TestMethod()]
-        //public void CheckForStraight_Low_Test_True()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = true;
-        //    string testData = "2C 3C 4C 5C 6C";
+            Assert.AreEqual(expectedCount, nonDuplicates.Count());
+            Assert.AreEqual(expectedCardValue, nonDuplicates[0].Value);
+        }
 
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForStraight(testHand);
+        [TestMethod()]
+        public void HighCardTieBreak_HandOneWinsTest()
+        {
 
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
-        //[TestMethod()]
-        //public void CheckForStraight_High_Test_True()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = true;
-        //    string testData = "6C 7D 8C 9H 10C";
+            PokerHelper poker = new PokerHelper();
+            List<Card> hand1 = new List<Card>
+            {
+                new Card("KC"),
+                new Card("KD"),
+                new Card("9S"),
+                new Card("9D"),
+                new Card("2S")
+            };
 
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForStraight(testHand);
+            List<Card> hand2 = new List<Card>
+            {
+                new Card("KS"),
+                new Card("KH"),
+                new Card("8S"),
+                new Card("8D"),
+                new Card("2C")
+            };
 
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
+            bool winner = poker.HighCardTieBreak_HandOneWins(hand1, hand2);
 
-        //[TestMethod()]
-        //public void CheckForStraight_Picture_Test_True()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = true;
-        //    string testData = "10H JC QC KC AC";
-
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForStraight(testHand);
-
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
-        //[TestMethod()]
-        //public void CheckForStraight_NumberToPicture_Test_True()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = true;
-        //    string testData = "8C 9D 10C JH QC";
-
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForStraight(testHand);
-
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
-
-        //[TestMethod()]
-        //public void CheckForStraight_Low_Test_False()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = false;
-        //    string testData = "2C 3C 4C 5C 7C";
-
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForStraight(testHand);
-
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
-        //[TestMethod()]
-        //public void CheckForStraight_High_Test_False()
-        //{
-        //    PokerHelper poker = new PokerHelper();
-        //    bool expectedValue = false;
-        //    string testData = "6C 7D 8C 9H JC";
-
-        //    List<string> testHand = testData.Split(' ').ToList();
-        //    bool actualValue = poker.CheckForStraight(testHand);
-
-        //    Assert.AreEqual(expectedValue, actualValue);
-        //}
+            Assert.IsTrue(winner);
+        }
 
     }
 }

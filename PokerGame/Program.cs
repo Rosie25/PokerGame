@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,53 +9,69 @@ namespace PokerGame
 {
     class Program
     {
+        static int playerOneWins = 0;
+        static int playerTwoWins = 0;
+        static int ties = 0;
+
         static void Main()
         {
-            int playerOneWins = 0;
-            int playerTwoWins = 0;
-            int ties = 0;
-            PokerHelper poker = new PokerHelper();
-
-            // read file
-            System.IO.StreamReader file = new System.IO.StreamReader(@"c:\temp\poker-hands.txt");
-            // for each line (game) in stream
-            string line;
-            while ((line = file.ReadLine()) != null)
+             if (Console.IsInputRedirected)
             {
-                poker.GetHands(line, out Hand handOne, out Hand handTwo);
-
-                // get hand results
-                handOne.SetHandValues();
-                handTwo.SetHandValues();
-                // compare result
-                if (handOne.Score > handTwo.Score)
+                // for each line (game) in piped stream
+                string line;
+                while ((line = Console.ReadLine()) != null)
                 {
-                    playerOneWins++;
+                    PlayPoker(line);
                 }
-                if (handOne.Score < handTwo.Score)
-                {
-                    playerTwoWins++;
-                }
-                if (handOne.Score == handTwo.Score)
-                {
-                    // if the same, sort by tie breaker then record result
-                    if (poker.IsTie(handOne, handTwo))
-                        ties++;
-                    else if (poker.HandOneWinsTieBreak(handOne, handTwo))
-                        playerOneWins++;
-                    else
-                        playerTwoWins++;
-                }
+            }
+            else
+            {
+                // get cards from console
+                string line = Console.ReadLine();
+                PlayPoker(line);
             }
 
             // output results
-            Console.WriteLine("Poker Game Results:");
-            Console.WriteLine("------------------:");
+            Console.WriteLine("");
+            Console.WriteLine("Poker Game Results");
+            Console.WriteLine("------------------");
+            Console.WriteLine("");
             Console.WriteLine("Player 1: " + playerOneWins.ToString() + " win(s)");
+            Console.WriteLine("");
             Console.WriteLine("Player 2: " + playerTwoWins.ToString() + " win(s)");
-            Console.WriteLine("Ties: " + ties.ToString() + " win(s)");
-            Console.WriteLine("The End :)");
+        }
 
+        /// <summary>
+        /// function to simulate the poker game and determine the hand winner
+        /// </summary>
+        /// <param name="line">the card data</param>
+        public static void PlayPoker(string line)
+        {
+            PokerHelper poker = new PokerHelper(); 
+            poker.GetHands(line, out Hand handOne, out Hand handTwo);
+
+            // get hand results
+            handOne.SetHandValues();
+            handTwo.SetHandValues();
+            // compare result
+            if (handOne.Score > handTwo.Score)
+            {
+                playerOneWins++;
+            }
+            if (handOne.Score < handTwo.Score)
+            {
+                playerTwoWins++;
+            }
+            if (handOne.Score == handTwo.Score)
+            {
+                // if the same, sort by tie breaker then record result
+                if (poker.IsTie(handOne, handTwo))
+                    ties++;
+                else if (poker.HandOneWinsTieBreak(handOne, handTwo))
+                    playerOneWins++;
+                else
+                    playerTwoWins++;
+            }
         }
 
     }
