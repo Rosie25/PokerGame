@@ -18,14 +18,15 @@ namespace PokerGame
             int handOneScore;
             int handTwoScore;
             // get input stream 
+            PokerHelper poker = new PokerHelper();
 
             // for each line (game) in stream
             string line;
             while (!string.IsNullOrEmpty(line = Console.ReadLine()))
             {
-                GetHands(line, out handOne, out handTwo);
-                handOneScore = GetHandScore(handOne);
-                handTwoScore = GetHandScore(handTwo);
+                poker.GetHands(line, out handOne, out handTwo);
+                handOneScore = poker.GetHandScore(handOne);
+                handTwoScore = poker.GetHandScore(handTwo);
             }
 
             // get hand one result
@@ -43,25 +44,6 @@ namespace PokerGame
         }
 
 
-        private static void GetHands(string line, out List<string> handOne, out List<string> handTwo)
-        {
-            handOne = new List<string>();
-            handTwo = new List<string>();
 
-            int half = line.Length / 2;
-            string one = line.Substring(0, half);
-            string two = line.Substring(half + 1, half);
-
-            handOne = line.Substring(0, half).Split(' ').ToList();
-            handTwo = line.Substring(half + 1, half).Split(' ').ToList();
-        }
-
-        private static int GetHandScore(List<string> hand)
-        {
-            int score = 0;
-
-
-            return score;
-        }
     }
 }
